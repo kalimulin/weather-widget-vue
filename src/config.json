@@ -1,0 +1,10 @@
+{
+  "apiKey": "63836fc048c107a45c0d642aceb98ec8",
+  "defaultCity": {
+    "name": "Москва",
+    "coord": {
+      "lat": "55.7522",
+      "lon": "37.6156"
+    }
+  }
+}
