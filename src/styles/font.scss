@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'OpenSans';
+  src: url('../fonts/OpenSans-Regular.woff') format('woff'),
+     url('../fonts/OpenSans-Regular.woff2') format('woff2');
+  font-weight: normal; font-style: normal;
+ }
+ /* Сглаживание */
+ body {
+   -webkit-font-smoothing: subpixel-antialiased !important;
+   -webkit-backface-visibility: hidden;
+   -moz-backface-visibility:  hidden;
+   -ms-backface-visibility:   hidden;
+ }

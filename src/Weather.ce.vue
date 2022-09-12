@@ -61,21 +61,15 @@ export default defineComponent({
     async getWeather (lat: number, lon: number, apiKey: string): Promise<void> {
       const value = await openWeatherSearch(lat, lon, apiKey)
       this.weatherData = value
-      console.log(this.weatherData)
     }
   }
 })
 </script>
 
 <style lang="scss">
-.weather-widget {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import './styles/normalize.scss';
+@import './styles/font.scss';
+@import './styles/styles.scss';
 
 [v-cloak] {display: none}
 </style>
