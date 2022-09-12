@@ -7,13 +7,14 @@
       </div>
       <div class="weather-widget__temp">{{ temp }}</div>
     </div>
-    <div class="weather-widget__other-info">{{ feelsLike }} {{ weatherDescription }}</div>
+    <div class="weather-widget__other-info">{{ feelsLike }} {{ weatherDescription }} {{ beaufortWindScale }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { WeatherData } from '../types/WeaterDataTypes.interface'
+import { windClassificationSearch } from '../services/WindClassification'
 
 export default defineComponent({
   name: 'WidgetView',
@@ -48,6 +49,13 @@ export default defineComponent({
       if (this.weatherData?.weather?.length) {
         const desc = this.weatherData.weather[0].description
         return desc[0].toUpperCase() + desc.slice(1) + '.'
+      }
+      return ''
+    },
+    beaufortWindScale (): string {
+      if (this.weatherData?.wind?.speed) {
+        const speed = this.weatherData.wind.speed
+        return windClassificationSearch(speed)
       }
       return ''
     }
