@@ -32,4 +32,35 @@
     font-weight: bold;
     white-space: nowrap;
   }
+
+  &__other-info {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__other-info-item {
+    margin-top: 16px;
+    margin-right: 16px;
+    line-height: 12px;
+
+    &_wind {
+      display: flex;
+      align-items: center;
+
+      img {
+        height: 12px;
+        margin-right: 4px;
+      }
+    }
+
+    &_pressure {
+      display: flex;
+      align-items: center;
+
+      img {
+        height: 12px;
+        margin-right: 4px;
+      }
+    }
+  }
 }
