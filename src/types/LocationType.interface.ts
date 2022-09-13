@@ -1,4 +1,4 @@
-import { WeatherData } from "./WeaterDataTypes.interface";
+import { WeatherData } from "./WeaterDataTypes.interface"
 
 export interface LocationData {
   id?: number,

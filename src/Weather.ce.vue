@@ -1,6 +1,6 @@
 <template>
   <div class="weather-widget" v-cloak>
-    <Widget v-for="loc in locationsList" :key="loc.id" :weather-data="loc.weatherData"/>
+    <Widget v-for="loc in locations" :key="loc.id" :weather-data="loc.weatherData"/>
   </div>
 </template>
 
@@ -9,6 +9,7 @@ import { defineComponent } from 'vue'
 import Widget from './components/Widget.vue'
 import configJson from './config.json'
 import { openWeatherSearch } from './services/OpenWeatherAPI'
+import { getStoredLocations, addLocationToStore } from './services/LocalStorage'
 import { WeatherData } from './types/WeaterDataTypes.interface'
 import { LocationData } from './types/LocationType.interface'
 
@@ -19,9 +20,6 @@ export default defineComponent({
   },
 
   computed: {
-    locationSet () {
-      return Boolean(this.location.lon && this.location.lat)
-    },
     locationsList (): LocationData[] {
       return this.locations.filter(loc => loc.weatherData)
     }
@@ -46,35 +44,34 @@ export default defineComponent({
       console.log('Geolocation is not available.')
       return
     }
-    if (localStorage?.locations) {
-      const locationsLocal = JSON.parse(localStorage.locations) as LocationData[]
-      if (locationsLocal.length) {
-        locationsLocal.forEach(element => {
-          this.getWeather(element.lat, element.lon, this.apiKey)
-        })
-      } else {
-        localStorage.setItem('locations', JSON.stringify([]))
-        this.getCurrentPosition()
-      }
+    const locationsLocal = getStoredLocations()
+    if (locationsLocal.length) {
+      locationsLocal.forEach(element => {
+        this.getWeather(element.lat, element.lon, this.apiKey)
+      })
+    } else {
+      this.getCurrentPosition()
     }
   },
 
   methods: {
-    async getWeather (lat: number, lon: number, apiKey: string): Promise<void> {
+    async getWeather (lat: number, lon: number, apiKey: string, addToStore = false): Promise<void> {
       const value = await openWeatherSearch(lat, lon, apiKey)
-      console.log(value)
       this.weatherData = value
-      this.locations.push({
+      const newLocation: LocationData = {
         lat: value.coord.lat,
         lon: value.coord.lon,
         id: value.id,
         order: this.locations.length,
         weatherData: value
-      })
-      localStorage.setItem('locations', JSON.stringify(this.locations))
+      }
+      console.log(addToStore)
+      this.locations.push(newLocation)
+      if (addToStore) {
+        addLocationToStore(newLocation)
+      }
     },
     getCurrentPosition (): void {
-      console.log('get position')
       this.gettingLocation = true
       navigator.geolocation.getCurrentPosition(pos => {
         this.gettingLocation = false
@@ -82,8 +79,7 @@ export default defineComponent({
           lat: pos.coords.latitude,
           lon: pos.coords.longitude
         }
-        console.log('location', this.location)
-        this.getWeather(this.location.lat, this.location.lon, this.apiKey)
+        this.getWeather(this.location.lat, this.location.lon, this.apiKey, true)
       }, err => {
         console.log(err)
         this.gettingLocation = false

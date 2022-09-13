@@ -39,9 +39,6 @@ export default defineComponent({
       type: Object as () => WeatherData | undefined
     }
   },
-  created () {
-    console.log(this.weatherData)
-  },
   computed: {
     cityCountry (): string {
       const cityName = this.weatherData?.name ? this.weatherData.name : ''
