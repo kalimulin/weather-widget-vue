@@ -19,7 +19,7 @@
       </div>
       <div class="weather-widget__other-info-item">{{ humidityInfo }}</div>
       <div class="weather-widget__other-info-item">{{ dewPointInfo }}</div>
-      <div class="weather-widget__other-info-item"></div>
+      <div class="weather-widget__other-info-item">{{ visibilityInfo }}</div>
     </div>
   </div>
 </template>
@@ -91,6 +91,9 @@ export default defineComponent({
     },
     humidityInfo (): string {
       return this.humidity ? `Humidity ${this.humidity}%` : ''
+    },
+    visibilityInfo (): string {
+      return this.weatherData?.visibility ? `Visibility ${(this.weatherData.visibility / 1000).toFixed(1)}km` : ''
     },
     dewPointInfo (): string {
       if (this.humidity && this.temp) {
