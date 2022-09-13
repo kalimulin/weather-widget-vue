@@ -1,5 +1,5 @@
 <template>
-  <div class="weather-widget__view" v-if="weatherData.cod === 200">
+  <div class="weather-widget__view" v-if="weatherData?.cod === 200">
     <div class="weather-widget__city-name">{{ cityCountry }}</div>
     <div class="weather-widget__main-info">
       <div class="weather-widget__icon">
@@ -36,8 +36,11 @@ export default defineComponent({
   props: {
     weatherData: {
       required: true,
-      type: Object as () => WeatherData
+      type: Object as () => WeatherData | undefined
     }
+  },
+  created () {
+    console.log(this.weatherData)
   },
   computed: {
     cityCountry (): string {
