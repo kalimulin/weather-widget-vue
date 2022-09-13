@@ -2,16 +2,16 @@
   font-family: 'OpenSans', sans-serif;
   font-size: 10px;
   color: #2c3e50;
-  margin-top: 60px;
+  position: relative;
+  width: 225px;
+  border: 1px solid rgba($color: #000000, $alpha: .1);
+  box-sizing: border-box;
 
   &__view {
-    border: 1px solid rgba($color: #000000, $alpha: .1);
-    width: 225px;
     padding: 16px;
-    box-sizing: border-box;
   }
 
-  &__city-name {
+  &__title {
     font-weight: bold;
     font-size: 12px;
   }
@@ -62,5 +62,16 @@
         margin-right: 4px;
       }
     }
+  }
+
+  &__edit {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    padding: 16px;
+    box-sizing: border-box;
   }
 }

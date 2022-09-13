@@ -1,6 +1,6 @@
 <template>
   <div class="weather-widget__view" v-if="weatherData?.cod === 200">
-    <div class="weather-widget__city-name">{{ cityCountry }}</div>
+    <div class="weather-widget__title">{{ cityCountry }}</div>
     <div class="weather-widget__main-info">
       <div class="weather-widget__icon">
         <img :src="`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`" alt="" />

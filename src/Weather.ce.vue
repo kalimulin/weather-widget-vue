@@ -1,14 +1,16 @@
 <template>
   <div class="weather-widget" v-cloak>
     <Widget v-for="loc in locations" :key="loc.id" :weather-data="loc.weatherData"/>
+    <WidgetEdit v-if="editMode" :locations="locations" :api-key="apiKey" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Widget from './components/Widget.vue'
+import WidgetEdit from './components/WidgetEdit.vue'
 import configJson from './config.json'
-import { openWeatherSearch } from './services/OpenWeatherAPI'
+import { getWeatherByLocation } from './services/OpenWeatherAPI'
 import { getStoredLocations, addLocationToStore } from './services/LocalStorage'
 import { WeatherData } from './types/WeaterDataTypes.interface'
 import { LocationData } from './types/LocationType.interface'
@@ -16,13 +18,8 @@ import { LocationData } from './types/LocationType.interface'
 export default defineComponent({
   name: 'App',
   components: {
-    Widget
-  },
-
-  computed: {
-    locationsList (): LocationData[] {
-      return this.locations.filter(loc => loc.weatherData)
-    }
+    Widget,
+    WidgetEdit
   },
 
   data: () => {
@@ -32,7 +29,8 @@ export default defineComponent({
       weatherData: {} as WeatherData,
       location: {} as LocationData,
       gettingLocation: false,
-      locations: [] as LocationData[]
+      locations: [] as LocationData[],
+      editMode: true
     }
   },
 
@@ -56,7 +54,7 @@ export default defineComponent({
 
   methods: {
     async getWeather (lat: number, lon: number, apiKey: string, addToStore = false): Promise<void> {
-      const value = await openWeatherSearch(lat, lon, apiKey)
+      const value = await getWeatherByLocation(lat, lon, apiKey)
       this.weatherData = value
       const newLocation: LocationData = {
         lat: value.coord.lat,
@@ -65,7 +63,6 @@ export default defineComponent({
         order: this.locations.length,
         weatherData: value
       }
-      console.log(addToStore)
       this.locations.push(newLocation)
       if (addToStore) {
         addLocationToStore(newLocation)
