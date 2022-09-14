@@ -1,5 +1,5 @@
 .weather-widget {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
   font-size: 10px;
   color: #2c3e50;
   position: relative;
@@ -107,6 +107,8 @@
   &__drag-handle {
     cursor: grab;
     margin-left: 4px;
+    display: flex;
+    align-items: center;
 
     img {
       height: 12px;
@@ -118,6 +120,8 @@
     opacity: .5;
     transition: 300ms;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 
     &:hover {
       opacity: 1;
