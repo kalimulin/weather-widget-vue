@@ -13,5 +13,5 @@ export const getWeatherByName = async (name: string, apiKey: string, state?: str
 }
 
 export const getCitiesByName = async (searchText: string, apiKey: string): Promise<CitySearchResult[] | CitySearchError> =>
-  await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${searchText}&appid=${apiKey}`)
+  await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${searchText}&appid=${apiKey}`)
     .then(val => val.json())
