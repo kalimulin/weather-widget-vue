@@ -13,6 +13,7 @@
       :api-key="apiKey"
       @add-location="addLocation"
       @remove-location="removeLocation"
+      @sort-locations="sortLocations"
       @close="editMode = false"
     />
   </div>
@@ -24,7 +25,7 @@ import Widget from './components/Widget.vue'
 import WidgetEdit from './components/WidgetEdit.vue'
 import configJson from './config.json'
 import { getWeatherByLocation } from './services/OpenWeatherAPI'
-import { getStoredLocations, addLocationToStore, removeLocationFromStore } from './services/LocalStorage'
+import { getStoredLocations, addLocationToStore, removeLocationFromStore, sortLocations } from './services/LocalStorage'
 import { WeatherData } from './types/WeaterDataTypes.interface'
 import { LocationData } from './types/LocationType.interface'
 
@@ -102,6 +103,10 @@ export default defineComponent({
     removeLocation (location: LocationData) {
       this.locations = [...this.locations].filter(el => el.id !== location.id)
       removeLocationFromStore(location)
+    },
+    sortLocations (locations: LocationData[]) {
+      this.locations = [...locations]
+      sortLocations(locations)
     }
   }
 })

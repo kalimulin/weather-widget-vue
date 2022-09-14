@@ -24,3 +24,7 @@ export const removeLocationFromStore = (location: LocationData): void => {
   const newLocations = locationsLocal.filter(el => el.id !== location.id)
   localStorage.setItem('locations', JSON.stringify(newLocations))
 }
+
+export const sortLocations = (locations: LocationData[]): void => {
+  localStorage.setItem('locations', JSON.stringify(locations))
+}

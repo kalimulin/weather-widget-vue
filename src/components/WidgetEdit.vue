@@ -4,14 +4,26 @@
     <div class="weather-widget__close" @click="$emit('close')">
       <img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMUwxMSAxMU0xIDExTDExIDFMMSAxMVoiIHN0cm9rZT0iIzM3NDE1MSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" />
     </div>
-    <div class="weather-widget__locations">
-      <div class="weather-widget__location-item" v-for="loc in locationsList" :key="loc.id">
-        <span>{{ loc.weatherData?.name }}, {{ loc.weatherData?.sys.country }}</span>
-        <div class="weather-widget__remove-city" @click="removeLocation(loc)">
-          <img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAxOCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcgOVYxNU0xMSA5VjE1TTEgNUgxN00xNiA1TDE1LjEzMyAxNy4xNDJDMTUuMDk3MSAxNy42NDY2IDE0Ljg3MTMgMTguMTE4OCAxNC41MDExIDE4LjQ2MzZDMTQuMTMwOSAxOC44MDgzIDEzLjY0MzkgMTkgMTMuMTM4IDE5SDQuODYyQzQuMzU2MTQgMTkgMy44NjkwNyAxOC44MDgzIDMuNDk4ODkgMTguNDYzNkMzLjEyODcgMTguMTE4OCAyLjkwMjkyIDE3LjY0NjYgMi44NjcgMTcuMTQyTDIgNUgxNlpNMTIgNVYyQzEyIDEuNzM0NzggMTEuODk0NiAxLjQ4MDQzIDExLjcwNzEgMS4yOTI4OUMxMS41MTk2IDEuMTA1MzYgMTEuMjY1MiAxIDExIDFIN0M2LjczNDc4IDEgNi40ODA0MyAxLjEwNTM2IDYuMjkyODkgMS4yOTI4OUM2LjEwNTM2IDEuNDgwNDMgNiAxLjczNDc4IDYgMlY1SDEyWiIgc3Ryb2tlPSIjMzc0MTUxIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" />
-        </div>
-      </div>
-    </div>
+    <draggable
+        :list="draggableLocationsList"
+        class="weather-widget__locations"
+        handle=".handle"
+        item-key="id"
+        @start="drag=true"
+        @end="onDraggableEnd"
+      >
+        <template #item="{ element }">
+          <div class="weather-widget__location-item">
+            <div class="weather-widget__drag-handle handle">
+            <img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxOCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMTNIMTdNMSAxSDE3SDFaTTEgNUgxN0gxWk0xIDlIMTdIMVoiIHN0cm9rZT0iIzM3NDE1MSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" />
+          </div>
+          <span>{{ element.weatherData?.name }}, {{ element.weatherData?.sys.country }}</span>
+          <div class="weather-widget__remove-city" @click="removeLocation(element)">
+            <img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAxOCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcgOVYxNU0xMSA5VjE1TTEgNUgxN00xNiA1TDE1LjEzMyAxNy4xNDJDMTUuMDk3MSAxNy42NDY2IDE0Ljg3MTMgMTguMTE4OCAxNC41MDExIDE4LjQ2MzZDMTQuMTMwOSAxOC44MDgzIDEzLjY0MzkgMTkgMTMuMTM4IDE5SDQuODYyQzQuMzU2MTQgMTkgMy44NjkwNyAxOC44MDgzIDMuNDk4ODkgMTguNDYzNkMzLjEyODcgMTguMTE4OCAyLjkwMjkyIDE3LjY0NjYgMi44NjcgMTcuMTQyTDIgNUgxNlpNMTIgNVYyQzEyIDEuNzM0NzggMTEuODk0NiAxLjQ4MDQzIDExLjcwNzEgMS4yOTI4OUMxMS41MTk2IDEuMTA1MzYgMTEuMjY1MiAxIDExIDFIN0M2LjczNDc4IDEgNi40ODA0MyAxLjEwNTM2IDYuMjkyODkgMS4yOTI4OUM2LjEwNTM2IDEuNDgwNDMgNiAxLjczNDc4IDYgMlY1SDEyWiIgc3Ryb2tlPSIjMzc0MTUxIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K" />
+          </div>
+          </div>
+        </template>
+      </draggable>
     <div class="weather-widget__search">
       <label class="weather-widget__search-label">Add location</label>
       <input class="weather-widget__search-field" type="text" v-model="searchText" @input="getLocationsByName">
@@ -32,6 +44,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import draggable from 'vuedraggable'
 import { LocationData } from '../types/LocationType.interface'
 import { getCitiesByName } from '../services/OpenWeatherAPI'
 import { CitySearchResult, CitySearchError } from '@/types/CitySearchResultType.interface'
@@ -52,8 +65,16 @@ export default defineComponent({
     return {
       searchText: '',
       timer: 0 as ReturnType<typeof setTimeout>,
-      citiesSearch: [] as CitySearchResult[]
+      citiesSearch: [] as CitySearchResult[],
+      drag: false,
+      draggableLocationsList: [] as LocationData[]
     }
+  },
+  created () {
+    this.draggableLocationsList = [...this.locations]
+  },
+  components: {
+    draggable
   },
   computed: {
     locationsList (): LocationData[] {
@@ -84,6 +105,15 @@ export default defineComponent({
     },
     removeLocation (location: LocationData) {
       this.$emit('removeLocation', location)
+    },
+    onDraggableEnd () {
+      this.drag = false
+      this.$emit('sortLocations', this.draggableLocationsList)
+    }
+  },
+  watch: {
+    locationsList (newValue) {
+      this.draggableLocationsList = [...newValue]
     }
   }
 })

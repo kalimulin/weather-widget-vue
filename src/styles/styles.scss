@@ -104,6 +104,15 @@
     justify-content: space-between;
   }
 
+  &__drag-handle {
+    cursor: pointer;
+    margin-left: 4px;
+
+    img {
+      height: 12px;
+    }
+  }
+
   &__remove-city {
     padding: 4px;
     opacity: .5;
