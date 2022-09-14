@@ -16,6 +16,14 @@
       @sort-locations="sortLocations"
       @close="editMode = false"
     />
+    <div class="weather-widget__empty-list" v-if="!locations || !locations.length">
+      <span>Location list is empty!</span>
+      <button @click="getCurrentPosition">Add current location</button>
+      <button @click="editMode = true">Add custom locations</button>
+    </div>
+    <div class="weather-widget__loader" v-if="loader">
+      <span>Loading...</span>
+    </div>
   </div>
 </template>
 
@@ -24,7 +32,7 @@ import { defineComponent } from 'vue'
 import Widget from './components/Widget.vue'
 import WidgetEdit from './components/WidgetEdit.vue'
 import configJson from './config.json'
-import { getWeatherByLocation } from './services/OpenWeatherAPI'
+import { getWeatherByLocation, getWeatherByName } from './services/OpenWeatherAPI'
 import { getStoredLocations, addLocationToStore, removeLocationFromStore, sortLocations } from './services/LocalStorage'
 import { WeatherData } from './types/WeaterDataTypes.interface'
 import { LocationData } from './types/LocationType.interface'
@@ -44,7 +52,8 @@ export default defineComponent({
       location: {} as LocationData,
       gettingLocation: false,
       locations: [] as LocationData[],
-      editMode: false
+      editMode: false,
+      loader: false
     }
   },
 
@@ -59,7 +68,7 @@ export default defineComponent({
     this.locations = getStoredLocations()
     if (this.locations.length) {
       this.locations.forEach(element => {
-        this.getWeather(element.lat, element.lon, this.apiKey)
+        this.getWeather(element.lat, element.lon, this.apiKey, element.weatherData?.name, '', element.weatherData?.sys.country)
       })
     } else {
       this.getCurrentPosition()
@@ -67,8 +76,10 @@ export default defineComponent({
   },
 
   methods: {
-    async getWeather (lat: number, lon: number, apiKey: string): Promise<void> {
-      const value = await getWeatherByLocation(lat, lon, apiKey)
+    async getWeather (lat: number, lon: number, apiKey: string, name?: string, state?: string, country?: string): Promise<void> {
+      this.loader = true
+      const value = name ? await getWeatherByName(name, apiKey, state, country) : await getWeatherByLocation(lat, lon, apiKey)
+      this.loader = false
       const newLocation: LocationData = {
         lat: value.coord.lat,
         lon: value.coord.lon,
@@ -98,7 +109,7 @@ export default defineComponent({
       })
     },
     addLocation (location: LocationData) {
-      this.getWeather(location.lat, location.lon, this.apiKey)
+      this.getWeather(location.lat, location.lon, this.apiKey, location.name, '', location.country)
     },
     removeLocation (location: LocationData) {
       this.locations = [...this.locations].filter(el => el.id !== location.id)

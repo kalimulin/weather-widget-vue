@@ -4,5 +4,7 @@ export interface LocationData {
   id?: number,
   lat: number,
   lon: number,
-  weatherData?: WeatherData
+  weatherData?: WeatherData,
+  name?: string,
+  country?: string
 }
