@@ -71,7 +71,7 @@ export default defineComponent({
       return ''
     },
     windSpeed (): number | null {
-      return this.weatherData?.wind?.speed ? this.weatherData.wind.speed : null
+      return this.weatherData?.wind?.speed ? +this.weatherData.wind.speed.toFixed(0) : null
     },
     windDeg (): number | null {
       return this.weatherData?.wind?.deg ? this.weatherData.wind.deg : null

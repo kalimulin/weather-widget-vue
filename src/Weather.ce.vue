@@ -55,9 +55,9 @@ export default defineComponent({
       console.log('Geolocation is not available.')
       return
     }
-    const locationsLocal = getStoredLocations()
-    if (locationsLocal.length) {
-      locationsLocal.forEach(element => {
+    const locations = getStoredLocations()
+    if (locations.length) {
+      locations.forEach(element => {
         this.getWeather(element.lat, element.lon, this.apiKey)
       })
     } else {
@@ -66,7 +66,7 @@ export default defineComponent({
   },
 
   methods: {
-    async getWeather (lat: number, lon: number, apiKey: string, addToStore = false): Promise<void> {
+    async getWeather (lat: number, lon: number, apiKey: string): Promise<void> {
       const value = await getWeatherByLocation(lat, lon, apiKey)
       this.weatherData = value
       const newLocation: LocationData = {
@@ -77,8 +77,6 @@ export default defineComponent({
       }
       if (!this.locations.find(el => el.id === newLocation.id)) {
         this.locations.push(newLocation)
-      }
-      if (addToStore) {
         addLocationToStore(newLocation)
       }
     },
@@ -90,14 +88,14 @@ export default defineComponent({
           lat: pos.coords.latitude,
           lon: pos.coords.longitude
         }
-        this.getWeather(this.location.lat, this.location.lon, this.apiKey, true)
+        this.getWeather(this.location.lat, this.location.lon, this.apiKey)
       }, err => {
         console.log(err)
         this.gettingLocation = false
       })
     },
     addLocation (location: LocationData) {
-      this.getWeather(location.lat, location.lon, this.apiKey, true)
+      this.getWeather(location.lat, location.lon, this.apiKey)
     },
     removeLocation (location: LocationData) {
       this.locations = [...this.locations].filter(el => el.id !== location.id)
