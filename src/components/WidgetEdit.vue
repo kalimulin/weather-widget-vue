@@ -31,9 +31,9 @@
         <img alt="" :class="{'weather-widget__spinner': loading}" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMUwxMSAxMU0xIDExTDExIDFMMSAxMVoiIHN0cm9rZT0iIzM3NDE1MSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" />
       </div>
       <div class="weather-widget__search-result" v-if="citiesSearch && citiesSearch.length">
-        <div class="weather-widget__search-result-item" v-for="city in citiesSearch" :key="`${city.lat}${city.lon}`">
+        <div class="weather-widget__search-result-item" v-for="city in citiesSearch" :key="`${city.lat}${city.lon}`" @click="addLocation(city)">
           <span>{{ city.name }}, {{ city.country }}</span>
-          <div class="weather-widget__add-city" @click="addLocation(city)">
+          <div class="weather-widget__add-city">
             <img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcgMVY3TTcgN1YxM003IDdIMTNNNyA3SDEiIHN0cm9rZT0iIzM3NDE1MSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" />
           </div>
         </div>

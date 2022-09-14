@@ -177,9 +177,15 @@
     line-height: 12px;
     padding: 8px 4px;
     border-bottom: 1px solid rgba($color: #000000, $alpha: .1);
+    transition: 300ms;
+    cursor: pointer;
 
     &:last-child {
       border: none;
+    }
+
+    &:hover {
+      background-color: rgba($color: #8f8f8f, $alpha: .1);
     }
   }
 
