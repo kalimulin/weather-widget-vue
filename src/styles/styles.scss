@@ -261,4 +261,15 @@
     font-style: italic;
     font-weight: bold;
   }
+
+  &__spinner {
+    animation:spin .1s linear infinite;
+  }
+}
+
+@keyframes spin { 
+  100% { 
+      -webkit-transform: rotate(360deg); 
+      transform:rotate(360deg); 
+  } 
 }

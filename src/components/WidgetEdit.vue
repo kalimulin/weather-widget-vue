@@ -28,7 +28,7 @@
       <label class="weather-widget__search-label">Add location</label>
       <input placeholder="type location name..." class="weather-widget__search-field" type="text" v-model="searchText" @input="getLocationsByName">
       <div class="weather-widget__clear-search" @click="clearSearch" v-if="searchText.length">
-        <img alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMUwxMSAxMU0xIDExTDExIDFMMSAxMVoiIHN0cm9rZT0iIzM3NDE1MSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" />
+        <img alt="" :class="{'weather-widget__spinner': loading}" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMUwxMSAxMU0xIDExTDExIDFMMSAxMVoiIHN0cm9rZT0iIzM3NDE1MSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" />
       </div>
       <div class="weather-widget__search-result" v-if="citiesSearch && citiesSearch.length">
         <div class="weather-widget__search-result-item" v-for="city in citiesSearch" :key="`${city.lat}${city.lon}`">
@@ -67,7 +67,8 @@ export default defineComponent({
       timer: 0 as ReturnType<typeof setTimeout>,
       citiesSearch: [] as CitySearchResult[],
       drag: false,
-      draggableLocationsList: [] as LocationData[]
+      draggableLocationsList: [] as LocationData[],
+      loading: false
     }
   },
   created () {
@@ -83,10 +84,12 @@ export default defineComponent({
   },
   methods: {
     async getCities (searchText: string): Promise<void> {
+      this.loading = true
       const value = await getCitiesByName(searchText, this.apiKey)
       if (!('cod' in value)) {
         this.citiesSearch = value
       }
+      this.loading = false
     },
     getLocationsByName (): void {
       clearTimeout(this.timer)
