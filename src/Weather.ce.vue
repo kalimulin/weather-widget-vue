@@ -55,9 +55,9 @@ export default defineComponent({
       console.log('Geolocation is not available.')
       return
     }
-    const locations = getStoredLocations()
-    if (locations.length) {
-      locations.forEach(element => {
+    this.locations = getStoredLocations()
+    if (this.locations.length) {
+      this.locations.forEach(element => {
         this.getWeather(element.lat, element.lon, this.apiKey)
       })
     } else {
@@ -68,16 +68,18 @@ export default defineComponent({
   methods: {
     async getWeather (lat: number, lon: number, apiKey: string): Promise<void> {
       const value = await getWeatherByLocation(lat, lon, apiKey)
-      this.weatherData = value
       const newLocation: LocationData = {
         lat: value.coord.lat,
         lon: value.coord.lon,
         id: value.id,
         weatherData: value
       }
-      if (!this.locations.find(el => el.id === newLocation.id)) {
+      const findLocation = this.locations.find(el => el.id === newLocation.id)
+      addLocationToStore(newLocation)
+      if (!findLocation) {
         this.locations.push(newLocation)
-        addLocationToStore(newLocation)
+      } else {
+        findLocation.weatherData = value
       }
     },
     getCurrentPosition (): void {
