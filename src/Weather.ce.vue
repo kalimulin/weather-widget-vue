@@ -124,7 +124,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import './styles/normalize.scss';
 @import './styles/font.scss';
 @import './styles/styles.scss';
 
